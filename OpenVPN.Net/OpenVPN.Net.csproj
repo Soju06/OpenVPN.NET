@@ -45,10 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Event\Enums.cs" />
+    <Compile Include="Manager\Command\OpenVPNManagerCommand.cs" />
     <Compile Include="OpenVPN.cs" />
-    <Compile Include="OpenVPNConfig.cs" />
-    <Compile Include="OpenVPNManager.cs" />
-    <Compile Include="OpenVPNManagerException.cs" />
+    <Compile Include="Manager\OpenVPNManagerConfig.cs" />
+    <Compile Include="Manager\OpenVPNManager.cs" />
+    <Compile Include="Manager\Stream\OpenVPNManagerStreamBase.cs" />
+    <Compile Include="Manager\Command\OpenVPNManagerCommandEnums.cs" />
+    <Compile Include="Event\EventObjects.cs" />
+    <Compile Include="Manager\OpenVPNManagerException.cs" />
+    <Compile Include="Manager\Stream\OpenVPNManagerLoggerStream.cs" />
+    <Compile Include="Event\Events.cs" />
     <Compile Include="OpenVPNRequest.cs" />
     <Compile Include="OpenVPNUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

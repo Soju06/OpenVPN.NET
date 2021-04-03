@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace OpenVPNNet {
+namespace OpenVPNNET {
     public static class OpenVPN {
         private static RegistryKey GetOpenVPNUninstallRegistryKey() {
             RegistryKey key = null;

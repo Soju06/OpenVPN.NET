@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace OpenVPNNet {
+namespace OpenVPNNET.Manager {
     public static class OpenVPNExceptionMessage {
         public const string OpenVPNNotInstalled = "OpenVPN is not installed";
         public const string OpenVPNManagementInitializationFailed = "Failed to initialize the OpenVPN Management";
-        public const string OpenVPNManagementDisconnectedFailed = "Disconnected from OpenVPN Management socket\nHowever, OpenVPN may be running";
+        public const string OpenVPNManagementDisconnected = "Disconnected from OpenVPN Management socket\nHowever, OpenVPN may be running";
     }
 
     /// <summary>

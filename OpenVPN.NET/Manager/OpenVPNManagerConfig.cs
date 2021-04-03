@@ -5,16 +5,39 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenVPNNet
+namespace OpenVPNNET.Manager
 {
-    public class OpenVPNConfig {
-        public OpenVPNConfig() { }
-        public OpenVPNConfig(string config, params IPAddress[] dns) {
+    public class OpenVPNManagerConfig {
+        public OpenVPNManagerConfig() { }
+        public OpenVPNManagerConfig(string config, params IPAddress[] dns) {
             Config = config;
             if (dns != null && dns.Length > 0) DNS.AddRange(dns);
         }
 
-        private string Config { get; set; }
+        /// <summary>
+        /// openvpn.exe 경로
+        /// </summary>
+        public string OpenVPNExePath { get; set; } = OpenVPN.GetOpenVPNInstalledFilePath;
+
+        /// <summary>
+        /// 서비스 이벤트 이름
+        /// </summary>
+        public string ServiceEventName { get; set; } = "OpenVPNManagerEvent";
+
+        /// <summary>
+        /// 구성
+        /// </summary>
+        public string Config { get; set; }
+
+        /// <summary>
+        /// 데몬 콘솔을 숨깁니다
+        /// </summary>
+        public bool NoWindowDaemon { get; set; } = true;
+
+        /// <summary>
+        /// UAC를 사용합니다 만약 (NoWindowDaemon is true) 경후 UAC 승인 화면이 생략될 수 있습니다.
+        /// </summary>
+        public bool UseUAC { get; set; } = true;
 
         /// <summary>
         /// DNS
@@ -25,7 +48,7 @@ namespace OpenVPNNet
 
         public string GetConfig() {
             var sb = new StringBuilder();
-            sb.AppendLine(ConfigEncoding(Config));
+            sb.AppendLine(ConfigEncoding(Config ?? ""));
             if(DNS != null)
                 foreach (var item in DNS) 
                     sb.AppendLine($"dhcp-option DNS {item}");
@@ -33,6 +56,7 @@ namespace OpenVPNNet
         }
         
         private string ConfigEncoding(string config) {
+            if (config is null) throw new ArgumentNullException("config");
             var commands = config.Split('\n').ToList();
 
             const string management = "management";
