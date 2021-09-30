@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 
-namespace OpenVPNNET {
-    public static class OpenVPN {
-        private static RegistryKey GetOpenVPNUninstallRegistryKey() {
+namespace OpenVPN.NET {
+    public static class OpenVPNEnvironment {
+        private static RegistryKey GetOpenVPNUninstallRegistryKey() { 
             RegistryKey key = null;
             var is64bit = Environment.Is64BitOperatingSystem;
             for (int i = 0; i < 2; i++) {

@@ -1,7 +1,5 @@
-﻿using OpenVPNNET;
-using OpenVPNNET.Event;
-using OpenVPNNET.Manager;
-using OpenVPNNET.Manager.Stream;
+﻿using OpenVPN.NET;
+using OpenVPN.NET.Manager;
 using System;
 using System.IO;
 using System.Threading;
@@ -13,7 +11,7 @@ namespace OpenVpnTest {
         static CancellationTokenSource CancellationToken;
         public static void Example() {
             CancellationToken = new();
-            if (!OpenVPN.IsOpenVPNInstalled) {
+            if (!OpenVPNEnvironment.IsOpenVPNInstalled) {
                 Console.WriteLine("OpenVPN is not installed!");
                 Console.ReadLine();
                 return;
@@ -22,7 +20,7 @@ namespace OpenVpnTest {
             Console.CancelKeyPress += Console_CancelKeyPress;
             Console.WriteLine("OpenVPN Manager - Config & Account Example");
 
-            var Config = new OpenVPNManagerConfig();
+            var Config = new OpenVPNConfig();
 
             while (!CancellationToken.IsCancellationRequested) {
                 try {
@@ -57,18 +55,18 @@ namespace OpenVpnTest {
                 }
             }
 
-            void Stream_PasswordEvent(OpenVPNManagerLoggerStream sender,
-                OpenVPNManagerEventEventArgs<string> e) =>
+            void Stream_PasswordEvent(OpenVPNMessageStream sender,
+                OpenVPNEventArgs<string> e) =>
                     Login();
 
-            static void Stream_AnyEvent(OpenVPNManagerLoggerStream sender, OpenVPNManagerEventEventArgs e) {
+            static void Stream_AnyEvent(OpenVPNMessageStream sender, OpenVPNEventArgs e) {
                 if(e.EventType != "STATE")
                     Program.WriteLine($"{e.EventType}>{e.EventMessage}", ConsoleColor.Gray);
             }
 
-            static void Stream_StateChangedEvent(OpenVPNManagerLoggerStream sender, 
-                OpenVPNManagerEventEventArgs<OpenVPNManagerStateMessage> e) {
-                if(e?.EventMessage.State == StateMessageStateCode.CONNECTED) {
+            static void Stream_StateChangedEvent(OpenVPNMessageStream sender, 
+                OpenVPNEventArgs<OpenVPNStateMessageInfo> e) {
+                if(e?.EventMessage.State == MessageStateCode.CONNECTED) {
                     Program.WriteLine($"Connected. IP: {e.EventMessage.IPAddress}", ConsoleColor.Green);
                 } else if (e.EventMessage is not null) {
                     Program.WriteLine($"Connecting.. {e.EventMessage.State}", ConsoleColor.Yellow);

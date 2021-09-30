@@ -6,8 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 
-namespace OpenVPNNET {
-    public static class OpenVPNUtility {
+namespace OpenVPN.NET {
+    internal static class OpenVPNUtility {
         public static IPEndPoint GetManagementIPEndPoint() {
             const ushort MinUserPort = 1024;
             const ushort MaxUserPort = 49151;

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenVPNNET.Manager {
+namespace OpenVPN.NET.Manager {
     public static class OpenVPNExceptionMessage {
         public const string OpenVPNNotInstalled = "OpenVPN is not installed";
         public const string OpenVPNManagementInitializationFailed = "Failed to initialize the OpenVPN Management";

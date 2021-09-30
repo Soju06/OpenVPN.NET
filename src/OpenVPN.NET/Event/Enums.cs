@@ -1,8 +1,8 @@
-﻿namespace OpenVPNNET.Event {    
+﻿namespace OpenVPN.NET {    
     /// <summary>
     /// 이벤트 타입
     /// </summary>
-    public enum OpenVPNManagerEventTypes {
+    public enum EventTypes {
         /// <summary>
         /// 기록
         /// </summary>
@@ -40,9 +40,9 @@
     }
 
     /// <summary>
-    /// 상태 메시지 상태 코드
+    /// 메시지 상태 코드
     /// </summary>
-    public enum StateMessageStateCode {
+    public enum MessageStateCode {
         None,
         /// <summary>
         /// Wait

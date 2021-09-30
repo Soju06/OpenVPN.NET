@@ -1,40 +1,37 @@
-﻿using OpenVPNNET.Event;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace OpenVPNNET.Manager.Stream {
-    public class OpenVPNManagerLoggerStream : OpenVPNManagerStreamBase {
+namespace OpenVPN.NET.Manager {
+    public class OpenVPNMessageStream : OpenVPNStreamBase {
         /// <summary>
         /// 작업 결과를 수신합니다.
         /// </summary>
-        public event OpenVPNManagerLoggerReceiveEventHandler ReceivedEvent;
+        public event OpenVPNReceiveEventHandler ReceivedEvent;
         /// <summary>
         /// 모든 이벤트를 수신합니다.
         /// </summary>
-        public event OpenVPNManagerLoggerAnyEventEventHandler AnyEvent;
+        public event OpenVPNAnyEventHandler AnyEvent;
         /// <summary>
         /// Log 타입의 이벤트를 수신합니다.
         /// </summary>
-        public event OpenVPNManagerLoggerEventEventHandler<OpenVPNManagerLogMessage> LogEvent;
+        public event OpenVPNEventHandler<OpenVPNLogMessageInfo> LogEvent;
         /// <summary>
         /// Password 타입의 이벤트를 수신합니다.
         /// </summary>
-        public event OpenVPNManagerLoggerEventEventHandler<string> PasswordEvent;
+        public event OpenVPNEventHandler<string> PasswordEvent;
         /// <summary>
         /// State 타입의 이벤트를 수신합니다.
         /// </summary>
-        public event OpenVPNManagerLoggerEventEventHandler<OpenVPNManagerStateMessage> StateChangedEvent;
+        public event OpenVPNEventHandler<OpenVPNStateMessageInfo> StateChangedEvent;
 
         private readonly byte[] Buffer;
         private readonly CancellationTokenSource CancellationToken;
 
-        public OpenVPNManagerLoggerStream(TcpClient client) : base(client) {
+        public OpenVPNMessageStream(TcpClient client) : base(client) {
             base.Send("log all on");
             base.Send("echo all on");
             base.Send("state all on");
@@ -58,7 +55,7 @@ namespace OpenVPNNET.Manager.Stream {
             }
         }
 
-        private OpenVPNManagerReceiveInfo ReceiveDecode(string s) {
+        private OpenVPNReceiveInfo ReceiveDecode(string s) {
             var ss = s.Split('\n');
             string r = "", em = null;
             bool nw, succ = true, iuc = false;
@@ -94,15 +91,15 @@ namespace OpenVPNNET.Manager.Stream {
         }
 
         private void EventDecode(string type, string message) {
-            if (!Enum.TryParse(type, out OpenVPNManagerEventTypes r)) return;
+            if (!Enum.TryParse(type, out EventTypes r)) return;
             switch (r) {
-                case OpenVPNManagerEventTypes.LOG:
+                case EventTypes.LOG:
                     LogEventInvoke(message);
                     break;
-                case OpenVPNManagerEventTypes.PASSWORD:
+                case EventTypes.PASSWORD:
                     PasswordEventInvoke(message);
                     break;
-                case OpenVPNManagerEventTypes.STATE:
+                case EventTypes.STATE:
                     StateEventInvoke(message);
                     break;
             }
@@ -118,7 +115,7 @@ namespace OpenVPNNET.Manager.Stream {
         /// <param name="cmd">명령어</param>
         /// <param name="timeout">시간 제한</param>
         /// <returns></returns>
-        public async Task<OpenVPNManagerReceiveInfo> Send(string cmd, long timeout = 20, CancellationToken? token = null) {
+        public async Task<OpenVPNReceiveInfo> Send(string cmd, long timeout = 20, CancellationToken? token = null) {
             CancellationToken.Token.ThrowIfCancellationRequested();
             if (string.IsNullOrWhiteSpace(cmd)) throw new ArgumentException("command is empty");
             if (!Connected) throw new OpenVPNManagementDisconnectedException(OpenVPNExceptionMessage.OpenVPNManagementDisconnected);
@@ -154,7 +151,7 @@ namespace OpenVPNNET.Manager.Stream {
             }
         }
 
-        private void CommandQueueProcess(OpenVPNManagerReceiveInfo info) {
+        private void CommandQueueProcess(OpenVPNReceiveInfo info) {
             if (CommandQueue.Count <= 0 || info == null || !info.IsUserCommand) return;
             for (int i = 0; i < CommandQueue.Count; i++)
                 try {
@@ -172,18 +169,18 @@ namespace OpenVPNNET.Manager.Stream {
                 }
         }
 
-        private void ReceivedEventInvoke(OpenVPNManagerReceiveEventArgs e) {
+        private void ReceivedEventInvoke(OpenVPNReceiveEventArgs e) {
             CommandQueueProcess(e?.ReceiveInfo);
             ReceivedEvent?.Invoke(this, e);
         }
         private void AnyEventInvoke(string type, string message) =>
             AnyEvent?.Invoke(this, new(type, message));
         private void PasswordEventInvoke(string message) =>
-            PasswordEvent?.Invoke(this, new(OpenVPNManagerEventTypes.PASSWORD, message));
+            PasswordEvent?.Invoke(this, new(EventTypes.PASSWORD, message));
         private void LogEventInvoke(string message) =>
-            LogEvent?.Invoke(this, new(OpenVPNManagerEventTypes.LOG, new(message)));
+            LogEvent?.Invoke(this, new(EventTypes.LOG, new(message)));
         private void StateEventInvoke(string message) =>
-            StateChangedEvent?.Invoke(this, new(OpenVPNManagerEventTypes.STATE, new(message)));
+            StateChangedEvent?.Invoke(this, new(EventTypes.STATE, new(message)));
 
         public override void Dispose() {
             try {
@@ -203,7 +200,7 @@ namespace OpenVPNNET.Manager.Stream {
             public string Command;
             public DateTime Timeout;
             public bool Completed;
-            public OpenVPNManagerReceiveInfo ReceiveInfo;
+            public OpenVPNReceiveInfo ReceiveInfo;
 
             public bool IsTimeout {
                 get => Timeout < DateTime.UtcNow;
@@ -211,9 +208,9 @@ namespace OpenVPNNET.Manager.Stream {
         }
     }
     
-    public delegate void OpenVPNManagerLoggerStreamAsyncCallbackHandler(OpenVPNManagerLoggerStream sender, OpenVPNManagerReceiveEventArgs e);
+    public delegate void OpenVPNStreamAsyncCallbackHandler(OpenVPNMessageStream sender, OpenVPNReceiveEventArgs e);
 
-    public delegate void OpenVPNManagerLoggerReceiveEventHandler(OpenVPNManagerLoggerStream sender, OpenVPNManagerReceiveEventArgs e);
-    public delegate void OpenVPNManagerLoggerEventEventHandler<Message>(OpenVPNManagerLoggerStream sender, OpenVPNManagerEventEventArgs<Message> e);
-    public delegate void OpenVPNManagerLoggerAnyEventEventHandler(OpenVPNManagerLoggerStream sender, OpenVPNManagerEventEventArgs e);
+    public delegate void OpenVPNReceiveEventHandler(OpenVPNMessageStream sender, OpenVPNReceiveEventArgs e);
+    public delegate void OpenVPNEventHandler<Message>(OpenVPNMessageStream sender, OpenVPNEventArgs<Message> e);
+    public delegate void OpenVPNAnyEventHandler(OpenVPNMessageStream sender, OpenVPNEventArgs e);
 }

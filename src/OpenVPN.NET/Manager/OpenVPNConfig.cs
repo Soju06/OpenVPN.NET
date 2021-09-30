@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenVPNNET.Manager
-{
-    public class OpenVPNManagerConfig {
-        public OpenVPNManagerConfig() { }
-        public OpenVPNManagerConfig(string config, params IPAddress[] dns) {
+namespace OpenVPN.NET.Manager {
+    public class OpenVPNConfig {
+        public OpenVPNConfig() { }
+        public OpenVPNConfig(string config, params IPAddress[] dns) {
             Config = config;
             if (dns != null && dns.Length > 0) DNS.AddRange(dns);
         }
@@ -17,7 +15,7 @@ namespace OpenVPNNET.Manager
         /// <summary>
         /// openvpn.exe 경로
         /// </summary>
-        public string OpenVPNExePath { get; set; } = OpenVPN.GetOpenVPNInstalledFilePath;
+        public string OpenVPNExePath { get; set; } = OpenVPNEnvironment.GetOpenVPNInstalledFilePath;
 
         /// <summary>
         /// 서비스 이벤트 이름

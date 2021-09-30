@@ -1,13 +1,10 @@
-﻿using OpenVPNNET.Manager.Command;
-using OpenVPNNET.Manager.Stream;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
-namespace OpenVPNNET.Manager
-{
+namespace OpenVPN.NET.Manager {
     /// <summary>
     /// OpenVPN Manager
     /// </summary>
@@ -27,17 +24,17 @@ namespace OpenVPNNET.Manager
         /// <summary>
         /// 스트림
         /// </summary>
-        public OpenVPNManagerLoggerStream Stream { get; }
+        public OpenVPNMessageStream Stream { get; }
 
-        private IPEndPoint ManagementAddress { get; }
-        private TcpClient ManagementCommandSocket { get; }
-        private Process OpenVPNProcess { get; }
-        private string ConfigPath { get; }
+        IPEndPoint ManagementAddress { get; }
+        TcpClient ManagementCommandSocket { get; }
+        Process OpenVPNProcess { get; }
+        string ConfigPath { get; }
 
-        public OpenVPNManager(OpenVPNManagerConfig config) {
+        public OpenVPNManager(OpenVPNConfig config) {
             if (config == null) throw new ArgumentNullException("config");
             if(config.OpenVPNExePath == null)
-                config.OpenVPNExePath = OpenVPN.GetOpenVPNInstalledFilePath;
+                config.OpenVPNExePath = OpenVPNEnvironment.GetOpenVPNInstalledFilePath;
             if (!File.Exists(config.OpenVPNExePath)) throw new OpenVPNNotInstalledException
                     (OpenVPNExceptionMessage.OpenVPNNotInstalled);
             if (!string.IsNullOrWhiteSpace(config.ServiceEventName)) 

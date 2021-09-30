@@ -1,15 +1,15 @@
-﻿namespace OpenVPNNET.Manager.Command {
+﻿namespace OpenVPN.NET.Manager {
     /// <summary>
     /// 시그널
     /// </summary>
-    public enum OpenVPNManagerSignal {
+    public enum ManagerSignal {
         Hup, Term, Usr1, Usr2, Int
     }
 
     /// <summary>
     /// 인증 재시도 모드
     /// </summary>
-    public enum OpenVPNManagerAuthRetryMode {
+    public enum ManagerAuthRetryMode {
         /// <summary>
         /// 없음
         /// </summary>
@@ -24,11 +24,11 @@
         Nointeract
     }
 
-    public enum OpenVPNManagerHoldMode {
+    public enum ManagerHoldMode {
         On, Off, Release
     }
 
-    public enum OpenVPNManagerState {
+    public enum ManagerState {
         /// <summary>
         /// OpenVPN의 초기 상태
         /// </summary>

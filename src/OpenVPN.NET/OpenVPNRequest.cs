@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace OpenVPNNET {
+namespace OpenVPN.NET {
     internal class OpenVPNRequest : Dictionary<string, string> {
         public static OpenVPNRequest Parse(string s) {
             var request = new OpenVPNRequest();

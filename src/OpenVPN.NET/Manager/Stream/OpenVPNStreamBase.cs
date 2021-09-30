@@ -3,8 +3,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace OpenVPNNET.Manager.Stream {
-    public abstract class OpenVPNManagerStreamBase : IDisposable {
+namespace OpenVPN.NET.Manager {
+    public abstract class OpenVPNStreamBase : IDisposable {
         public TcpClient Client { get; }
         public uint BufferSize { get; protected set; } = 1024;
 
@@ -15,7 +15,7 @@ namespace OpenVPNNET.Manager.Stream {
         /// </summary>
         public bool Connected { get => Client?.Connected == true; }
 
-        public OpenVPNManagerStreamBase(TcpClient client) {
+        public OpenVPNStreamBase(TcpClient client) {
             if ((Stream = (Client = client).GetStream()) == null)
                 throw new ArgumentNullException("stream");
             else if (!Client.Connected) throw new OpenVPNManagementDisconnectedException

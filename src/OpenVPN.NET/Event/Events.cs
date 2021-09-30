@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace OpenVPNNET.Event {
+namespace OpenVPN.NET {
     /// <summary>
     /// 이벤트
     /// </summary>
     /// <typeparam name="Message">이벤트 메시지</typeparam>
-    public class OpenVPNManagerEventEventArgs : EventArgs {
-        internal OpenVPNManagerEventEventArgs(string @event, string message) {
+    public class OpenVPNEventArgs : EventArgs {
+        internal OpenVPNEventArgs(string @event, string message) {
             EventType = @event; EventMessage = message;
         }
 
@@ -29,14 +25,14 @@ namespace OpenVPNNET.Event {
     /// 이벤트
     /// </summary>
     /// <typeparam name="Message">이벤트 메시지</typeparam>
-    public class OpenVPNManagerEventEventArgs<Message> : EventArgs {
-        internal OpenVPNManagerEventEventArgs(OpenVPNManagerEventTypes @event, Message message) {
+    public class OpenVPNEventArgs<Message> : EventArgs {
+        internal OpenVPNEventArgs(EventTypes @event, Message message) {
             EventType = @event; EventMessage = message;
         }
         /// <summary>
         /// 이벤트 타입
         /// </summary>
-        public OpenVPNManagerEventTypes EventType { get; }
+        public EventTypes EventType { get; }
 
         /// <summary>
         /// 이벤트 메시지
@@ -44,11 +40,11 @@ namespace OpenVPNNET.Event {
         public Message EventMessage { get; }
     }
 
-    public class OpenVPNManagerReceiveEventArgs : EventArgs {
-        internal OpenVPNManagerReceiveEventArgs(OpenVPNManagerReceiveInfo info) {
+    public class OpenVPNReceiveEventArgs : EventArgs {
+        internal OpenVPNReceiveEventArgs(OpenVPNReceiveInfo info) {
             ReceiveInfo = info;
         }
 
-        public OpenVPNManagerReceiveInfo ReceiveInfo { get; }
+        public OpenVPNReceiveInfo ReceiveInfo { get; }
     }
 }

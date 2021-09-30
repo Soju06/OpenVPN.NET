@@ -1,10 +1,10 @@
-﻿using OpenVPNNET.Manager;
+﻿using OpenVPN.NET.Manager;
 using System;
 using System.Net;
 
-namespace OpenVPNNET.Event {
-    public class OpenVPNManagerLogMessage {
-        internal OpenVPNManagerLogMessage(string s) {
+namespace OpenVPN.NET {
+    public class OpenVPNLogMessageInfo {
+        internal OpenVPNLogMessageInfo(string s) {
             var idx = 0;
             for (int i = 0; i < 3; i++) {
                 var ix = i != 2 ? s.IndexOf(',', idx) : -1;
@@ -47,8 +47,8 @@ namespace OpenVPNNET.Event {
         public string Message { get; set; }
     }
 
-    public class OpenVPNManagerReceiveInfo {
-        internal OpenVPNManagerReceiveInfo(bool isSuccess,
+    public class OpenVPNReceiveInfo {
+        internal OpenVPNReceiveInfo(bool isSuccess,
             string message, OpenVPNManagementCommandErrorException exception, bool isUserCommand) {
             IsSuccess = isSuccess; Message = message; ErrorException = exception; IsUserCommand = isUserCommand;
         }
@@ -68,8 +68,8 @@ namespace OpenVPNNET.Event {
         }
     }
 
-    public class OpenVPNManagerStateMessage {
-        internal OpenVPNManagerStateMessage(string s) {
+    public class OpenVPNStateMessageInfo {
+        internal OpenVPNStateMessageInfo(string s) {
             var idx = 0;
             RemainingParameters = new string[2];
             for (int i = 0; i < 8; i++) {
@@ -86,8 +86,8 @@ namespace OpenVPNNET.Event {
                         }
                     case 1: { // state
                             if (string.IsNullOrWhiteSpace(l))
-                                State = StateMessageStateCode.None;
-                            else if (Enum.TryParse(l, out StateMessageStateCode r))
+                                State = MessageStateCode.None;
+                            else if (Enum.TryParse(l, out MessageStateCode r))
                                 State = r;
                             break;
                         }
@@ -126,7 +126,7 @@ namespace OpenVPNNET.Event {
         /// <summary>
         /// 로그 타입
         /// </summary>
-        public StateMessageStateCode State { get; set; }
+        public MessageStateCode State { get; set; }
         /// <summary>
         /// 상태 메시지
         /// </summary>
