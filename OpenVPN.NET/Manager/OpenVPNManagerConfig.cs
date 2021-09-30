@@ -35,7 +35,7 @@ namespace OpenVPNNET.Manager
         public bool NoWindowDaemon { get; set; } = true;
 
         /// <summary>
-        /// UAC를 사용합니다 만약 (NoWindowDaemon is true) 경후 UAC 승인 화면이 생략될 수 있습니다.
+        /// UAC를 사용합니다 만약 (NoWindowDaemon is true) 경우 UAC 승인 화면이 생략될 수 있습니다.
         /// </summary>
         public bool UseUAC { get; set; } = true;
 

@@ -143,7 +143,7 @@ namespace OpenVPNNET.Manager.Stream {
         }
 
         /// <summary>
-        /// 매니저에 연결되어있는 경후 OpenVPN을 종료합니다
+        /// 매니저에 연결되어있는 경우 OpenVPN을 종료합니다
         /// </summary>
         public void Close() {
             try {

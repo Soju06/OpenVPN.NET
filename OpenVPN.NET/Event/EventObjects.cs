@@ -60,7 +60,7 @@ namespace OpenVPNNET.Event {
         internal bool IsUserCommand { get; }
 
         /// <summary>
-        /// 오류가 기록되어있는 경후 예외를 발생합니다.
+        /// 오류가 기록되어있는 경우 예외를 발생합니다.
         /// </summary>
         public void ThrowErrorException() {
             if (!IsSuccess && ErrorException != null)

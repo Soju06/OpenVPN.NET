@@ -40,8 +40,9 @@ namespace OpenVPNNET {
             var process = new Process {
                 EnableRaisingEvents = true
             };
-            process.StartInfo.UseShellExecute = !hideWindiow;
+            process.StartInfo.UseShellExecute = true;
             process.StartInfo.CreateNoWindow = hideWindiow;
+            process.StartInfo.WindowStyle = hideWindiow ? ProcessWindowStyle.Hidden : ProcessWindowStyle.Normal;
             if(useUAC) process.StartInfo.Verb = "runas";
             process.StartInfo.Arguments = $"--config \"{configPath}\" --service \"{serviceEventName}\" 0 --management {managementAddress.Address} {managementAddress.Port}" +
                 " --management-query-passwords --management-signal --management-forget-disconnect --auth-retry interact";

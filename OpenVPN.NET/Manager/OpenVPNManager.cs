@@ -57,6 +57,8 @@ namespace OpenVPNNET.Manager
         /// OpenVPN을 종료합니다.
         /// </summary>
         public void Close() {
+            if (Disposed) return;
+            Disposing = true;
             try {
                 if (Stream.Connected) Stream.Close();
                 Stream?.Dispose();
@@ -66,6 +68,8 @@ namespace OpenVPNNET.Manager
             } catch {
 
             }
+            Disposing = false;
+            Disposed = true;
         }
 
         public bool Disposed { get; private set; } = false;
@@ -74,12 +78,6 @@ namespace OpenVPNNET.Manager
         /// <summary>
         /// 종료 및 제거합니다.
         /// </summary>
-        public void Dispose() {
-            if (Disposed) return;
-            Disposing = true;
-            Close();
-            Disposing = false;
-            Disposed = true;
-        }
+        public void Dispose() => Close();
     }
 }
