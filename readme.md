@@ -4,7 +4,7 @@ OpenVPN.NET
 
 ## 사용 방법
 
-다음은 [**ConfigAndAccount**](https://github.com/Soju06/OpenVPN.NET/blob/main/OpenVPN.Test/ConfigAndAccountExample.cs) 예제 입니다.
+다음은 [**ConfigAndAccount**](https://github.com/Soju06/OpenVPN.NET/blob/main/src/OpenVPN.Test/ConfigAndAccountExample.cs) 예제 입니다.
 
 **using**
 
